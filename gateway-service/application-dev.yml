@@ -24,8 +24,8 @@ spring:
         enabled: true
         instance:
           name: Gateway Service
-          service-url: http://gateway-service:8080
-        url: http://admin-service:8080
+          service-url: http://localhost:8082
+        url: http://localhost:8083
         auto-registration: true
 
   main:
@@ -66,7 +66,7 @@ gateway:
       router:
         path: "/api/v1/doctor/**"
         fallback-uri: "/fallback/doctor"
-        uri: "http://doctor-service:8080"
+        uri: "http:/localhost:8084"
     patient-service:
       circuitBreakerCofig:
         timeout-seconds: 2
@@ -76,7 +76,7 @@ gateway:
       router:
         path: "/api/v1/patient/**"
         fallback-uri: "/fallback/patient"
-        uri: "http://patient-service:8080"
+        uri: "http://localhost:8085"
 
     appointment-service:
       circuitBreakerCofig:
@@ -87,7 +87,7 @@ gateway:
       router:
         path: "/api/v1/appointments/**"
         fallback-uri: "/fallback/appointment"
-        uri: "http://appointment-service:8080"
+        uri: "http://localhost:8086"
 
     auth-service:
       circuitBreakerCofig:
@@ -99,7 +99,7 @@ gateway:
       router:
         path: "/api/auth/**"
         fallback-uri: "/fallback/auth"
-        uri: "http://auth-service:8080"
+        uri: "http://localhost:8087"
   open-api-endpoints:
     - "/api/auth/register"
     - "/api/auth/signin"
