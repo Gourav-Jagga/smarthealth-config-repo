@@ -48,3 +48,29 @@ server:
 
 jwt:
   secret: ${JWT_SECRET}
+gateway:
+  router:
+    services:
+      doctor-service:
+        path: "/api/v1/doctor/**"
+        fallback-uri: "/fallback/doctor"
+        uri: "http://doctor-service:8080"
+
+      patient-service:
+        path: "/api/v1/patient/**"
+        fallback-uri: "/fallback/patient"
+        uri: "http://patient-service:8080"
+
+      appointment-service:
+        path: "/api/v1/appointments/**"
+        fallback-uri: "/fallback/appointment"
+        uri: "http://appointment-service:8080"
+
+      auth-service:
+        path: "/api/auth/**"
+        fallback-uri: "/fallback/auth"
+        uri: "http://auth-service:8080"
+
+    open-api-endpoints:
+      - "/api/auth/register"
+      - "/api/auth/signin"
