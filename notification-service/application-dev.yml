@@ -1,0 +1,61 @@
+app_name: notification-service
+adminUrl: http://localhost:8083
+serviceUrl: http://localhost:8082
+doctorServiceUrl: "http://localhost:8084"
+patientServiceUrl: "http://localhost:8085"
+appointmentServiceUrl: "http://localhost:8086"
+notificationServiceUrl: "http://localhost:8088"
+authServiceUrl: "http://localhost:8087"
+MONGO_URI: mongodb://root:rootpassword@mongodb:27017/healthcare?authSource=admin
+KAFKA_BOOTSTRAP_SERVER: kafka:9092
+KAFKA_TOPIC: appointments
+JWT_SECRET: aHR0cHM6Ly93d3cueW91YmlsdW1hbWVyaWNhLmNvbS9sb2dpbi8=
+KAFKA_GROUP_ID: appointment-notifications-group
+MAIL_SERVER_HOST: smtp.gmail.com
+MAIL_SERVER_PORT: 587
+spring:
+  application:
+    name: ${app_name}
+
+  boot:
+    admin:
+      client:
+        enabled: true
+        instance:
+          name: ${app_name}
+          service-url: ${notificationServiceUrl}
+        url: ${adminUrl}
+        auto-registration: true
+
+  kafka:
+    consumer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER}
+      group-id: ${KAFKA_GROUP_ID}
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    topic:
+      name: ${KAFKA_TOPIC}
+
+  mail:
+    host: ${MAIL_SERVER_HOST}
+    port: ${MAIL_SERVER_PORT}
+    username: ${MAIL_SERVER_USERNAME}
+    password: ${MAIL_SERVER_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      enable:
+        include: health
+
+server:
+  port: 8088

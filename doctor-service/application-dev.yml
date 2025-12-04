@@ -1,0 +1,45 @@
+app_name: doctor-service
+adminUrl: http://localhost:8083
+serviceUrl: http://localhost:8082
+doctorServiceUrl: "http://localhost:8084"
+patientServiceUrl: "http://localhost:8085"
+appointmentServiceUrl: "http://localhost:8086"
+authServiceUrl: "http://localhost:8087"
+MONGO_URI: mongodb://root:rootpassword@mongodb:27017/healthcare?authSource=admin
+KAFKA_BOOTSTRAP_SERVER: kafka:9092
+KAFKA_TOPIC: appointments
+JWT_SECRET: aHR0cHM6Ly93d3cueW91YmlsdW1hbWVyaWNhLmNvbS9sb2dpbi8=
+spring:
+    application:
+        name: ${app_name}
+    boot:
+        admin:
+            client:
+                enabled: true
+                instance:
+                    name: ${app_name}
+                    service-url: ${doctorServiceUrl}
+                url: ${adminUrl}
+                auto-registration: true
+
+    data:
+        mongodb:
+            uri: ${MONGO_URI}
+
+logging:
+    level:
+        org:
+            springframework:
+                web: DEBUG
+                servlet: DEBUG
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+            enable:
+                include: health
+
+server:
+    port: 8084

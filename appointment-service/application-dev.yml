@@ -1,0 +1,69 @@
+app:
+    environment: prod
+#Changing Variables
+app_name: appointment-service
+adminUrl: http://localhost:8083
+serviceUrl: http://localhost:8082
+doctorServiceUrl: "http://localhost:8084"
+patientServiceUrl: "http://localhost:8085"
+appointmentServiceUrl: "http://localhost:8086"
+authServiceUrl: "http://localhost:8087"
+MONGO_URI: mongodb://root:rootpassword@mongodb:27017/healthcare?authSource=admin
+KAFKA_BOOTSTRAP_SERVER: kafka:9092
+KAFKA_TOPIC: appointments
+spring:
+    application:
+        name: ${app_name}
+    boot:
+        admin:
+            client:
+                enabled: true
+                instance:
+                    name: ${app_name}
+                    service-url: ${appointmentServiceUrl}
+                url: ${adminUrl}
+                auto-registration: true
+    data:
+        mongodb:
+            uri: ${MONGO_URI}
+    kafka:
+        producer:
+            bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER}
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+        topic:
+            name: ${KAFKA_TOPIC}
+
+logging:
+    level:
+        org:
+            springframework:
+                web: DEBUG
+                servlet: DEBUG
+            apache:
+                kafka:
+                    clients:
+                        producer: DEBUG
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+            enable:
+                include: health
+
+server:
+    port: ${APPOINTMENT_SERVICE_PORT:8086}
+
+doctor:
+    service:
+        url: ${doctorServiceUrl}/api/v1/doctor
+
+patient:
+    service:
+        url: ${patientServiceUrl}/api/v1/patient
+    data:
+        mongodb:
+            uri: ${MONGO_URI}

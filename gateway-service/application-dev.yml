@@ -1,13 +1,26 @@
+#Changing Variables
+app_name: gateway-service
+allowedOrigins:
+  - http://localhost:9090
+  - http://localhost:5173
+  - http://localhost:8081
+adminUrl: http://localhost:8083
+serviceUrl: http://localhost:8082
+doctorServiceUrl: "http://localhost:8084"
+patientServiceUrl: "http://localhost:8085"
+appointmentServiceUrl: "http://localhost:8086"
+authServiceUrl: "http://localhost:8087"
+
+#  default strucutres for internl use
 spring:
+  application:
+    name: ${app_name}
   cloud:
     gateway:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins:
-              - http://localhost:9090
-              - http://localhost:5173
-              - http://localhost:8081
+            allowedOrigins: ${allowedOrigins}
             allowedMethods:
               - GET
               - POST
@@ -16,25 +29,20 @@ spring:
               - OPTIONS
             allowedHeaders: "*"
             allowCredentials: true
-  application:
-    name: gateway-service
   boot:
     admin:
       client:
         enabled: true
         instance:
-          name: Gateway Service
-          service-url: http://localhost:8082
-        url: http://localhost:8083
+          name: {app_name}
+          service-url: ${serviceUrl}
+        url: ${adminUrl}
         auto-registration: true
-
   main:
     web-application-type: reactive
-
   logging:
     level:
       org.springframework.cloud.gateway: DEBUG
-
 management:
   endpoints:
     web:
@@ -42,12 +50,11 @@ management:
         include: "*"
       enable:
         include: health
-
 server:
   port: ${GATEWAY_SERVICE_PORT}
-
 jwt:
   secret: ${JWT_SECRET}
+
 gateway:
   services:
     default:
@@ -66,7 +73,7 @@ gateway:
       router:
         path: "/api/v1/doctor/**"
         fallback-uri: "/fallback/doctor"
-        uri: "http:/localhost:8084"
+        uri: ${doctorServiceUrl}
     patient-service:
       circuitBreakerCofig:
         timeout-seconds: 2
@@ -76,8 +83,7 @@ gateway:
       router:
         path: "/api/v1/patient/**"
         fallback-uri: "/fallback/patient"
-        uri: "http://localhost:8085"
-
+        uri:  ${patientServiceUrl}
     appointment-service:
       circuitBreakerCofig:
         timeout-seconds: 2
@@ -87,7 +93,7 @@ gateway:
       router:
         path: "/api/v1/appointments/**"
         fallback-uri: "/fallback/appointment"
-        uri: "http://localhost:8086"
+        uri: ${appointmentServiceUrl}
 
     auth-service:
       circuitBreakerCofig:
@@ -95,11 +101,10 @@ gateway:
         failure-rate-threshold: 40.0
         wait-duration-open-seconds: 5
         sliding-window-size: 50
-
       router:
         path: "/api/auth/**"
         fallback-uri: "/fallback/auth"
-        uri: "http://localhost:8087"
+        uri: ${authServiceUrl}
   open-api-endpoints:
     - "/api/auth/register"
     - "/api/auth/signin"
