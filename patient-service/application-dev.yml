@@ -6,7 +6,7 @@ patientServiceUrl: "http://localhost:8085"
 appointmentServiceUrl: "http://localhost:8086"
 notificationServiceUrl: "http://localhost:8088"
 authServiceUrl: "http://localhost:8087"
-MONGO_URI: mongodb://root:rootpassword@mongodb:27017/healthcare?authSource=admin
+MONGO_URI: mongodb://root:rootpassword@localhost:27017/healthcare?authSource=admin
 KAFKA_BOOTSTRAP_SERVER: kafka:9092
 KAFKA_TOPIC: appointments
 JWT_SECRET: aHR0cHM6Ly93d3cueW91YmlsdW1hbWVyaWNhLmNvbS9sb2dpbi8=
