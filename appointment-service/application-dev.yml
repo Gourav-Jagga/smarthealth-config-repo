@@ -9,7 +9,7 @@ patientServiceUrl: "http://localhost:8085"
 appointmentServiceUrl: "http://localhost:8086"
 authServiceUrl: "http://localhost:8087"
 MONGO_URI: mongodb://root:rootpassword@localhost:27017/healthcare?authSource=admin
-KAFKA_BOOTSTRAP_SERVER: kafka:9092
+KAFKA_BOOTSTRAP_SERVER: localhost:9092
 KAFKA_TOPIC: appointments
 spring:
     application:
