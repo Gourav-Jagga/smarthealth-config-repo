@@ -10,8 +10,7 @@ doctorServiceUrl: "http://localhost:8084"
 patientServiceUrl: "http://localhost:8085"
 appointmentServiceUrl: "http://localhost:8086"
 authServiceUrl: "http://localhost:8087"
-
-#  default strucutres for internl use
+#  default strucutres for internl use/
 spring:
   application:
     name: ${app_name}
@@ -20,7 +19,10 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: ${allowedOrigins}
+            allowedOrigins:
+              - http://localhost:9090
+              - http://localhost:5173
+              - http://localhost:8081
             allowedMethods:
               - GET
               - POST
